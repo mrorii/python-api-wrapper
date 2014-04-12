@@ -34,7 +34,8 @@ class MuseScoreAPI(object):
 
     def __init__(
             self,
-            credFile = None,
+            credFile=None,
+            client_key=None,
             proxy_url=None):
         """Initialize with your MuseScore application credentials"""
         self.proxies = {'https': proxy_url} if proxy_url else None
@@ -46,6 +47,11 @@ class MuseScoreAPI(object):
                           client_secret=cred["client_secret"],
                           resource_owner_key=cred["resource_owner_key"],
                           resource_owner_secret=cred["resource_owner_secret"])
+        elif client_key:
+            self.auth = None
+            self.client_key = client_key
+        else:
+            raise Exception('At least a client key is needed')
 
 
     def _prepare_url(self, subdomain, path):
@@ -78,7 +84,12 @@ class MuseScoreAPI(object):
         :returns: MuseScoreAPI.MuseScoreResponse object
         """
         session = requests.Session()
-        session.auth = self.auth
+        if self.auth:
+            session.auth = self.auth
+        elif self.client_key:
+            if not params:
+                params = {}
+            params['oauth_consumer_key'] = self.client_key
         session.headers = {'User-Agent': USER_AGENT}
         resource, endpoint = self._get_endpoint(resource)
         if endpoint in REST_ENDPOINTS:

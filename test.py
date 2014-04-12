@@ -27,10 +27,11 @@ except:
     sys.stdout = codecs.getwriter('utf8')(sys.stdout)
 
 
-api = MuseScoreAPI(
-    "credentials.json")
+#api = MuseScoreAPI("credentials.json")
+api = MuseScoreAPI(client_key="musichackday")
 
-TEST_NUMBER = 9
+
+TEST_NUMBER = 2
 
 try:
     if TEST_NUMBER == 0:
@@ -78,6 +79,7 @@ try:
 
     if TEST_NUMBER == 9:
         r = api.postScore("title", "test.mscz", description="description", license=MuseScoreAPI.LICENSE_CC_ZERO)
+        print(r.text)
 
 except Exception as e:
     print(e)
