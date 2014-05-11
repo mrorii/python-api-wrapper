@@ -98,7 +98,6 @@ class MuseScoreAPI(object):
             if not method in (name.upper() for name in methods):
                 raise Exception('"%s" is not valid endpoint for resource "%s"' % (method, resource))
             url = self._prepare_url(REST_SUBDOMAIN, resource)
-            print url
             timeout = REST_SOCKET_TIMEOUT
         else:
             raise Exception('"%s" is not valid endpoint' % resource)
@@ -131,8 +130,8 @@ class MuseScoreAPI(object):
             raise Exception('"%s" is not an MSCZ file' % file)
         filename = os.path.basename(file)
         files = {'score_data': (filename, open(file, 'rb'), 'application/octet-stream'),
-            "title": ('', title), 
-            "description": ('', description), 
+            "title": ('', title),
+            "description": ('', description),
             "private" : ('', str(private)),
             "tags" : ('', tags),
             "license" : ('', license),
@@ -191,4 +190,4 @@ class RestIterator(object):
         """Return a score as a JSON object."""
         for item in self.results:
             yield item
-            
+
